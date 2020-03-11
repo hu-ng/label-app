@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :addresses, except: [:update, :destroy]
       resources :parcels, except: [:update, :destroy]
       resources :shipments, except: [:update, :destroy]
+      post 'get_label', controller: :label, action: :create
     end
   end
 end
