@@ -4,5 +4,11 @@ Rails.application.routes.draw do
   post 'signup', controller: :signup, action: :create
   delete 'signin', controller: :signin, action: :destroy
 
-  # Add routes for other stuff later
+  namespace :api do
+    namespace :v1 do
+      resources :addresses, except: [:update, :destroy]
+      resources :parcels, except: [:update, :destroy]
+      resources :shipments, except: [:update, :destroy]
+    end
+  end
 end
