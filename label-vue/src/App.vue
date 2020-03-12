@@ -1,11 +1,12 @@
 <template>
   <div id="app">
     <div class="container">
-      <div class="sign-out float-right">
+      <div class="sign-out float-right d-block">
         <router-link class="mr-3" to="/shipments">Shipments</router-link>
         <router-link class="mr-3" to="/home">Home</router-link>
         <a href="#" @click="signOut">Sign Out</a>
       </div>
+      <br>
       <router-view></router-view>
     </div>
   </div>

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     setError (error, text) {
-      console.log(this.error)
+      console.log(error)
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
 
@@ -83,6 +83,7 @@ export default {
         label: {unique_id: unique_id}
       })
         .then(response => {
+          console.log(response)
           if (response.data.label_link) {
             window.open(response.data.label_link, '_blank');
           }
