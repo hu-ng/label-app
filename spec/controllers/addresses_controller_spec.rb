@@ -11,7 +11,8 @@ RSpec.describe Api::V1::AddressesController, type: :controller do
       :state => 'CA',
       :zip => '90277',
       :country => 'US',
-      :phone => '310-808-5243'
+      :phone => '310-808-5243',
+      :title => "Home"
     }
   }
 
@@ -23,7 +24,8 @@ RSpec.describe Api::V1::AddressesController, type: :controller do
       :state => 'abc',
       :zip => 'abc',
       :country => 'abc',
-      :phone => 'abc'
+      :phone => 'abc',
+      :title => "Home"
     }
   }
 
@@ -32,7 +34,7 @@ RSpec.describe Api::V1::AddressesController, type: :controller do
   end
 
   describe 'GET #index' do
-    let!(:address) { create(:address, user: user) }
+    let!(:address) { create(:address, user: user, title: "Home") }
 
     it 'returns a success response' do
       get :index
@@ -43,7 +45,7 @@ RSpec.describe Api::V1::AddressesController, type: :controller do
   end
 
   describe 'GET #show' do
-    let!(:address) { create(:address, user: user) }
+    let!(:address) { create(:address, user: user, title: "Home") }
     before { sign_in_as(user)}
 
     it 'returns a success response' do

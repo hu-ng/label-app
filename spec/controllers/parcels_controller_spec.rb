@@ -3,13 +3,14 @@ require 'rails_helper'
 RSpec.describe Api::V1::ParcelsController, type: :controller do
 
   let(:user) { create(:user) }
-  
+
   let(:valid_attributes) {
     {
       length: 10,
       width: 10,
       height: 10,
-      weight: 10
+      weight: 10,
+      title: "T-shirt"
     }
   }
 
@@ -18,7 +19,8 @@ RSpec.describe Api::V1::ParcelsController, type: :controller do
       length: 10,
       width: nil,
       height: 10,
-      weight: nil
+      weight: nil,
+      title: "T-shirt"
     }
   }
 
@@ -27,7 +29,7 @@ RSpec.describe Api::V1::ParcelsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let!(:parcel) { create(:parcel, user: user) }
+    let!(:parcel) { create(:parcel, user: user, title: "T-shirt") }
 
     it 'returns a success response' do
       get :index
@@ -38,7 +40,7 @@ RSpec.describe Api::V1::ParcelsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let!(:parcel) { create(:parcel, user: user) }
+    let!(:parcel) { create(:parcel, user: user, title: "T-shirt") }
     before { sign_in_as(user)}
 
     it 'returns a success response' do

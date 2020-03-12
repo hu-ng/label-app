@@ -22,12 +22,11 @@ module Api
             weight: parcel_params[:weight]
           )
         rescue EasyPost::Error => error
-          puts "#{error.code} (#{error.http_status}): #{error.message}"
           render json: { error_code: error.code }, status: :unprocessable_entity
         end
 
         unless error
-          @parcel = current_user.parcels.build(unique_id: parcel.id)
+          @parcel = current_user.parcels.build(unique_id: parcel.id, title: parcel_params[:title])
           if @parcel.save
             render json: @parcel, status: :created, location: api_v1_parcel_path(@parcel)
           else
@@ -39,7 +38,7 @@ module Api
       private
 
       def parcel_params
-        params.require(:parcel).permit(:length, :width, :height, :weight)
+        params.require(:parcel).permit(:length, :width, :height, :weight, :title)
       end
     end
   end

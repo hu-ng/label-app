@@ -26,7 +26,7 @@ module Api
 
         # If address is verified
         if address.verifications.delivery.success
-          @address = current_user.addresses.build(unique_id: address.id)
+          @address = current_user.addresses.build(unique_id: address.id, title: address_params[:title])
           if @address.save
             render json: @address, status: :created, location: api_v1_address_path(@address)
           else
@@ -40,7 +40,7 @@ module Api
       private
 
       def address_params
-        params.require(:address).permit(:company, :street1, :street2, :city, :state, :zip, :phone)
+        params.require(:address).permit(:company, :street1, :street2, :city, :state, :zip, :phone, :title)
       end
     end
   end
