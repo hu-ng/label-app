@@ -9,6 +9,7 @@ module Api
       end
 
       def show
+        @address = current_user.addresses.find_by_id(params[:id])
         render json: @address
       end
 

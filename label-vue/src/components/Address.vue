@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="form-address" @submit.prevent="createAddress">
+    <form class="form-address" @submit="createAddress">
       <div class="alert alert-danger" v-if="error">{{ error }}</div>
       <div class="form-group">
         <label for="title">Title</label>
@@ -42,7 +42,7 @@
             :key="address.id"
             :address="address"
             @click="chooseAddress(address)">
-            <label>{{ address.title }}</label>
+            <label>{{ address.id }}. {{ address.title }}</label>
         </li>
     </ul>
   </div>

@@ -26,7 +26,7 @@
     </form>
     <ul class="list-group py-3">
       <li class="list-group-item bg-info text-white" v-for="parcel in parcels" :key="parcel.id" :parcel="parcel" @click="chooseParcel(parcel)">
-          <label>{{ parcel.title }}</label>
+          <label>{{ parcel.id }}. {{ parcel.title }}</label>
       </li>
     </ul>
   </div>

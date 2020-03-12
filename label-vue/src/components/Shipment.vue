@@ -1,5 +1,6 @@
 <template>
   <div class="py-5">
+    <div class="alert alert-danger" v-if="error">{{ error }}</div>
     <table class="table">
       <thead>
         <tr>
@@ -14,9 +15,9 @@
             :key="shipment.id"
             :shipment="shipment">
             <td>{{ shipment.id }}</td>
-            <td>{{ getTitleAddress(shipment.from_address_id) }}</td>
-            <td>{{ getTitleAddress(shipment.to_address_id) }}</td>
-            <td>{{ getTitleParcel(shipment.parcel_id) }}</td>
+            <td>{{ shipment.from_address_id }}</td>
+            <td>{{ shipment.to_address_id }}</td>
+            <td>{{ shipment.parcel_id }}</td>
             <td>
               <button type="button" name="button"
                       @click="createLabel(shipment.unique_id)">
@@ -29,47 +30,66 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'Shipment',
-    data() {
-      return {
-        shipments: []
-      }
+export default {
+  name: 'Shipment',
+  data() {
+    return {
+      shipments: [],
+      to_address: [],
+      from_address: [],
+      parcel: [],
+      error: ''
+    }
+  },
+
+  created() {
+    if (!localStorage.signedIn) {
+      this.$router.replace('/') }
+    else {
+      this.$http.secured.get('/api/v1/shipments')
+        // Get all current addresses
+        .then(response => { this.shipments = response.data })
+        .catch(error => this.setError(error, 'Something went wrong'))
+    }
+  },
+  methods: {
+    setError (error, text) {
+      console.log(this.error)
+      this.error = (error.response && error.response.data && error.response.data.error) || text
     },
 
-    created() {
-      if (!localStorage.signedIn) {
-        this.$router.replace('/') }
-      else {
-        this.$http.secured.get('/api/v1/shipments')
-          // Get all current addresses
-          .then(response => { this.shipments = response.data })
-          .catch(error => this.setError(error, 'Something went wrong'))
-      }
+    getTitleAddress(id, fromAddressBool) {
+      this.$http.secured.get(`/api/v1/addresses/${id}`)
+        .then(response => {
+          if (fromAddressBool) {
+            this.from_address.push(response.data.title)
+          } else {
+            this.to_address.push(response.data.title)
+          }
+        })
+        .catch(error => this.setError(error, 'Something went wrong'))
     },
 
-    methods: {
-      setError (error, text) {
-        this.error = (error.response && error.response.data && error.response.data.error) || text
-      },
+    getTitleParcel(id) {
+      this.$http.secured.get(`/api/v1/parcels/${id}`)
+        .then(response => {
+          this.parcel.push(response.data.title)
+        })
+        .catch(error => this.setError(error, 'Something went wrong'))
+    },
 
-      getTitleAddress(id) {
-        this.$http.secured.get(`/api/v1/addresses/${id}`)
-          .then(response => {
-            return response.data.title
-          })
-          .catch(error => this.setError(error, 'Something went wrong'))
-      },
-
-      getTitleParcel(id) {
-        this.$http.secured.get(`/api/v1/parcels/${id}`)
-          .then(response => {
-            return response.data.title
-          })
-          .catch(error => this.setError(error, 'Something went wrong'))
-      },
-      }
+    createLabel(unique_id) {
+      this.$http.secured.post('/api/v1/get_label', {
+        label: {unique_id: unique_id}
+      })
+        .then(response => {
+          if (response.data.label_link) {
+            window.open(response.data.label_link, '_blank');
+          }
+      })
+        .catch(error => this.setError(error, 'Label for the shipment already exists'))
     }
   }
+}
 
 </script>

@@ -3,19 +3,19 @@
     <div class="row py-5">
       <div class="col">
         <h3>From Address</h3>
-        <Address v-bind:fromAddress="true" @clickFromAddress="chooseToAddress"/>
+        <Address v-bind:fromAddress="true" @clickFromAddress="chooseFromAddress"/>
       </div>
       <div class="col">
         <h3>To Address</h3>
-        <Address v-bind:fromAddress="false" @clickToAddress="chooseFromAddress"/>
+        <Address v-bind:fromAddress="false" @clickToAddress="chooseToAddress"/>
       </div>
       <div class="col">
         <h3>Parcel</h3>
         <Parcel @clickParcel="chooseParcel"/>
       </div>
       <div class="col">
-        <p>Shipping from: {{ (toAddress) ? (toAddress.title) : ""}}</p>
-        <p>Shipping to: {{ (fromAddress) ? (fromAddress.title) : ""}}</p>
+        <p>Shipping from: {{ (fromAddress) ? (fromAddress.title) : ""}}</p>
+        <p>Shipping to: {{ (toAddress) ? (toAddress.title) : ""}}</p>
         <p>Parcel: {{ (parcel) ? (parcel.title) : ""}} </p>
         <button type="button" name="button" @click="createShipment">Create Shipment</button>
       </div>

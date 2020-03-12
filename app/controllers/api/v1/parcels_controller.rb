@@ -8,12 +8,11 @@ module Api
       end
 
       def show
+        @parcel = current_user.parcels.find_by_id(params[:id])
         render json: @parcel
       end
 
       def create
-        error = false
-
         begin
           parcel = EasyPost::Parcel.create(
             length: parcel_params[:length],
@@ -21,17 +20,16 @@ module Api
             height: parcel_params[:height],
             weight: parcel_params[:weight]
           )
-        rescue EasyPost::Error => error
-          render json: { error_code: error.code }, status: :unprocessable_entity
-        end
 
-        unless error
           @parcel = current_user.parcels.build(unique_id: parcel.id, title: parcel_params[:title])
           if @parcel.save
             render json: @parcel, status: :created, location: api_v1_parcel_path(@parcel)
           else
             render json: @parcel.errors, status: :unprocessable_entity
           end
+
+        rescue EasyPost::Error => error
+          render json: { error_code: error.code }, status: :unprocessable_entity
         end
       end
 
