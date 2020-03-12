@@ -10,10 +10,7 @@ module Api
           )
           render json: { label_link: shipment.postage_label.label_url }, status: :ok
         rescue EasyPost::Error => error
-          render json: {
-            error_code: error.code,
-            error_http_status: error.http_status,
-            error_message: error.message }, status: :unprocessable_entity
+          render json: { error_code: error.code, error_http_status: error.http_status, error_message: error.message }, status: :unprocessable_entity
         end
       end
 
